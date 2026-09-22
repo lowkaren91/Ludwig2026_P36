@@ -173,14 +173,20 @@
     }
   }
 
+  function syncPlay(){
+    video1.currentTime = 0;
+    video2.currentTime = 0;
+    video1.play().catch(()=>{});
+    video2.play().catch(()=>{});
+  }
+
   function startExperience(){
     overlay.hidden = true;
     statusBadge.hidden = false;
     muteToggle.hidden = false;
 
     setMuted(false);
-    video1.play().catch(()=>{});
-    video2.play().catch(()=>{});
+    syncPlay();
 
     if (sceneEl.hasLoaded) {
       startAR();
