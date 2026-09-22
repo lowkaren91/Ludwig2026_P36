@@ -1,0 +1,195 @@
+<title>Compound AR Viewer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#0c1836;
+    --ink:#f3f4f8;
+    --ink-dim:#c3cbe6;
+    --accent:#2f9179;
+    --accent-ink:#ffffff;
+    --eyebrow:#b9a4e6;
+    --panel: rgba(10,17,40,0.78);
+  }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    overflow:hidden;
+  }
+  a-scene{ position:fixed; inset:0; }
+
+  #tap-overlay{
+    position:fixed; inset:0; z-index:20;
+    display:flex; align-items:center; justify-content:center;
+    background: radial-gradient(circle at 50% 26%, #1c2f6b 0%, #0a1230 72%);
+    padding: 28px;
+    padding-top: calc(28px + env(safe-area-inset-top,0px));
+    padding-bottom: calc(28px + env(safe-area-inset-bottom,0px));
+  }
+  .tap-card{
+    max-width: 420px;
+    text-align:center;
+    display:flex; flex-direction:column; gap:16px; align-items:center;
+  }
+  .eyebrow{
+    text-transform:uppercase; letter-spacing:0.14em; font-size:12px;
+    color:var(--eyebrow); font-weight:600;
+  }
+  h1{
+    font-family:'Fraunces',Georgia,serif; font-weight:600;
+    font-size: clamp(28px,7vw,40px); margin:0; text-wrap:balance;
+  }
+  .tap-card p{ margin:0; color:var(--ink-dim); line-height:1.55; font-size:15px; }
+  .note{ font-size:12px !important; color:#8791b8 !important; }
+  button#start-btn{
+    margin-top:6px;
+    padding: 14px 32px;
+    font-size:16px; font-weight:600;
+    background: var(--accent);
+    color: var(--accent-ink);
+    border:none; border-radius:999px;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+  }
+  button#start-btn:active{ transform: scale(0.98); }
+
+  #status-badge{
+    position:fixed; z-index:15;
+    top: calc(env(safe-area-inset-top,0px) + 14px);
+    left:50%; transform:translateX(-50%);
+    background: var(--panel); color:#e9efe9;
+    padding:8px 16px; border-radius:999px; font-size:13px; letter-spacing:0.01em;
+    backdrop-filter: blur(6px);
+    display:flex; align-items:center; gap:8px;
+  }
+  #status-badge .dot{ width:7px; height:7px; border-radius:50%; background:#8791b8; flex:none; }
+  #status-badge.found .dot{ background:#3fbf95; }
+
+  #mute-toggle{
+    position:fixed; z-index:15;
+    bottom: calc(env(safe-area-inset-bottom,0px) + 18px);
+    right: 18px;
+    width:46px; height:46px; border-radius:50%;
+    background: var(--panel); border:1px solid rgba(255,255,255,0.15);
+    color:var(--ink); font-size:19px;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  [hidden]{ display:none !important; }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/aframe@1.5.0/dist/aframe-master.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.5/dist/mindar-image.prod.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.5/dist/mindar-image-aframe.prod.js"></script>
+
+<div id="tap-overlay">
+  <div class="tap-card">
+    <div class="eyebrow">Interactive &tau;-RAMD &middot; Augmented Reality</div>
+    <h1>Watch ligand dissociation in AR</h1>
+    <p>Point your camera at the poster to compare Compound 17 and the designed compound during &tau;-RAMD simulation.</p>
+    <button id="start-btn" type="button">Launch AR</button>
+    <p class="note">Camera access is used only for poster tracking. Nothing is recorded or uploaded.</p>
+  </div>
+</div>
+
+<div id="status-badge" hidden><span class="dot"></span><span id="status-text">Point camera at the poster…</span></div>
+<button id="mute-toggle" hidden type="button" aria-label="Toggle sound">🔊</button>
+
+<a-scene
+  mindar-image="imageTargetSrc: targets/targets.mind; autoStart: false; uiScanning: no; uiLoading: no; uiError: no;"
+  embedded
+  color-space="sRGB"
+  renderer="colorManagement: true; physicallyCorrectLights: true;"
+  vr-mode-ui="enabled: false"
+  device-orientation-permission-ui="enabled: false"
+>
+  <a-assets>
+    <video id="video-1" src="videos/compound17.mp4" preload="auto" loop muted playsinline webkit-playsinline></video>
+    <video id="video-2" src="videos/designedcompound.mp4" preload="auto" loop muted playsinline webkit-playsinline></video>
+  </a-assets>
+
+  <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+  <a-entity id="target-0" mindar-image-target="targetIndex: 0">
+    <a-entity position="-0.62 0 0">
+      <a-plane id="plane-1" src="#video-1" height="0.9" width="0.62" material="shader: flat; side: double;"></a-plane>
+      <a-text value="Compound 17" align="center" position="0 0.56 0" width="1.6" color="#F3F4F8"></a-text>
+    </a-entity>
+    <a-entity position="0.62 0 0">
+      <a-plane id="plane-2" src="#video-2" height="0.9" width="0.62" material="shader: flat; side: double;"></a-plane>
+      <a-text value="Designed compound" align="center" position="0 0.56 0" width="1.6" color="#F3F4F8"></a-text>
+    </a-entity>
+  </a-entity>
+</a-scene>
+
+<script>
+(function(){
+  const overlay = document.getElementById('tap-overlay');
+  const startBtn = document.getElementById('start-btn');
+  const statusBadge = document.getElementById('status-badge');
+  const statusText = document.getElementById('status-text');
+  const muteToggle = document.getElementById('mute-toggle');
+  const sceneEl = document.querySelector('a-scene');
+  const video1 = document.getElementById('video-1');
+  const video2 = document.getElementById('video-2');
+  const plane1 = document.getElementById('plane-1');
+  const plane2 = document.getElementById('plane-2');
+  const targetEl = document.getElementById('target-0');
+
+  let muted = true;
+
+  function fitPlane(video, plane){
+    function apply(){
+      if(!video.videoWidth || !video.videoHeight) return;
+      const h = 0.9;
+      const w = h * (video.videoWidth / video.videoHeight);
+      plane.setAttribute('width', w);
+      plane.setAttribute('height', h);
+    }
+    if(video.readyState >= 1) apply();
+    video.addEventListener('loadedmetadata', apply);
+  }
+  fitPlane(video1, plane1);
+  fitPlane(video2, plane2);
+
+  function setMuted(m){
+    muted = m;
+    video1.muted = m;
+    video2.muted = m;
+    muteToggle.textContent = m ? '🔇' : '🔊';
+  }
+
+  function startExperience(){
+    overlay.hidden = true;
+    statusBadge.hidden = false;
+    muteToggle.hidden = false;
+
+    try {
+      sceneEl.systems['mindar-image-system'].start();
+    } catch(e) {
+      statusText.textContent = 'Camera error: ' + e.message;
+    }
+
+    setMuted(false);
+    video1.play().catch(()=>{});
+    video2.play().catch(()=>{});
+  }
+
+  startBtn.addEventListener('click', startExperience, { once:true });
+  muteToggle.addEventListener('click', () => setMuted(!muted));
+
+  targetEl.addEventListener('targetFound', () => {
+    statusBadge.classList.add('found');
+    statusText.textContent = 'Poster found — playing';
+    video1.play().catch(()=>{});
+    video2.play().catch(()=>{});
+  });
+  targetEl.addEventListener('targetLost', () => {
+    statusBadge.classList.remove('found');
+    statusText.textContent = 'Point camera at the poster…';
+  });
+})();
+</script>
