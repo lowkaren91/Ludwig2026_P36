@@ -162,20 +162,30 @@
     muteToggle.textContent = m ? '🔇' : '🔊';
   }
 
+  function startAR(){
+    try {
+      sceneEl.systems['mindar-image-system'].start();
+      statusText.textContent = 'Point camera at the poster…';
+    } catch(e) {
+      statusText.textContent = 'Camera error: ' + e.message;
+    }
+  }
+
   function startExperience(){
     overlay.hidden = true;
     statusBadge.hidden = false;
     muteToggle.hidden = false;
 
-    try {
-      sceneEl.systems['mindar-image-system'].start();
-    } catch(e) {
-      statusText.textContent = 'Camera error: ' + e.message;
-    }
-
     setMuted(false);
     video1.play().catch(()=>{});
     video2.play().catch(()=>{});
+
+    if (sceneEl.hasLoaded) {
+      startAR();
+    } else {
+      statusText.textContent = 'Loading AR…';
+      sceneEl.addEventListener('loaded', startAR, { once:true });
+    }
   }
 
   startBtn.addEventListener('click', startExperience, { once:true });
