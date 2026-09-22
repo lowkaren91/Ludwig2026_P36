@@ -102,7 +102,7 @@
   mindar-image="imageTargetSrc: targets/targets.mind; autoStart: false; uiScanning: no; uiLoading: no; uiError: no; filterMinCF: 0.0001; filterBeta: 20;"
   embedded
   color-space="sRGB"
-  renderer="colorManagement: true; physicallyCorrectLights: true; antialias: false;"
+  renderer="colorManagement: true; physicallyCorrectLights: true;"
   vr-mode-ui="enabled: false"
   device-orientation-permission-ui="enabled: false"
 >
@@ -142,14 +142,6 @@
   const targetEl = document.getElementById('target-0');
 
   let muted = true;
-
-  function capPixelRatio(){
-    if (sceneEl.renderer) {
-      sceneEl.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-    }
-  }
-  if (sceneEl.hasLoaded) capPixelRatio();
-  else sceneEl.addEventListener('loaded', capPixelRatio, { once:true });
 
   function fitPlane(video, plane){
     function apply(){
