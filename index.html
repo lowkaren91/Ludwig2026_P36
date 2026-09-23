@@ -109,6 +109,8 @@
   <a-assets>
     <video id="video-1" src="videos/compound17.mp4" preload="auto" loop muted playsinline webkit-playsinline></video>
     <video id="video-2" src="videos/designedcompound.mp4" preload="auto" loop muted playsinline webkit-playsinline></video>
+    <img id="badge-1" src="images/badge-g4ml01.png" crossorigin="anonymous">
+    <img id="badge-2" src="images/badge-designed.png" crossorigin="anonymous">
   </a-assets>
 
   <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
@@ -123,6 +125,7 @@
       <a-plane position="0 0.76 -0.001" width="1.0" height="0.18" color="#0a1428" material="shader: flat; side: double; opacity: 0.85;"></a-plane>
       <a-box position="0 0.672 0.0005" width="1.0" height="0.014" depth="0.001" color="#00e6a8" material="shader: flat; side: double;"></a-box>
       <a-text value="G4ML01" align="center" position="0 0.76 0.001" width="1.5" letter-spacing="2" color="#EAFFF6"></a-text>
+      <a-image src="#badge-1" position="0.26 0.57 0.002" width="0.4" height="0.115" transparent="true"></a-image>
       <a-entity id="ring-1" position="0.35 0.2 0.002" rotation="0 0 210" visible="false" animation="property: scale; from: 1 1 1; to: 1.22 1.22 1.22; dir: alternate; dur: 550; loop: true">
         <a-box position="-0.075 0 0" width="0.09" height="0.022" depth="0.002" color="#ff3333" material="shader: flat; side: double;"></a-box>
         <a-triangle vertex-a="0.03 0 0" vertex-b="-0.03 0.038 0" vertex-c="-0.03 -0.038 0" color="#ff3333" material="shader: flat; side: double;"></a-triangle>
@@ -137,6 +140,7 @@
       <a-plane position="0 0.76 -0.001" width="1.0" height="0.18" color="#0a1428" material="shader: flat; side: double; opacity: 0.85;"></a-plane>
       <a-box position="0 0.672 0.0005" width="1.0" height="0.014" depth="0.001" color="#a374e8" material="shader: flat; side: double;"></a-box>
       <a-text value="Designed Compound" align="center" position="0 0.76 0.001" width="1.4" letter-spacing="1" color="#F5EEFF"></a-text>
+      <a-image src="#badge-2" position="0.26 0.57 0.002" width="0.4" height="0.115" transparent="true"></a-image>
       <a-entity id="ring-2" position="0.34 0.02 0.002" rotation="0 0 180" visible="false" animation="property: scale; from: 1 1 1; to: 1.22 1.22 1.22; dir: alternate; dur: 550; loop: true">
         <a-box position="-0.06 0 0" width="0.06" height="0.016" depth="0.002" color="#ff3333" material="shader: flat; side: double;"></a-box>
         <a-triangle vertex-a="0.022 0 0" vertex-b="-0.022 0.028 0" vertex-c="-0.022 -0.028 0" color="#ff3333" material="shader: flat; side: double;"></a-triangle>
