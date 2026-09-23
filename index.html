@@ -158,11 +158,14 @@
 
   let muted = true;
 
-  const DISSOCIATION_START = 10; // seconds into the loop, ~1s before the ligand moves out at t=11
+  // G4ML01 dissociates earlier (shorter residence time) than Designed Compound
+  const G4ML01_DISSOCIATION_START = 7.44; // ~1s before its own real content ends at 8.44s
+  const DESIGNED_DISSOCIATION_START = 10; // ~1s before its own real content ends at 11s
   video1.addEventListener('timeupdate', () => {
-    const show = video1.currentTime >= DISSOCIATION_START;
-    ring1.setAttribute('visible', show);
-    ring2.setAttribute('visible', show);
+    ring1.setAttribute('visible', video1.currentTime >= G4ML01_DISSOCIATION_START && video1.currentTime < 8.44);
+  });
+  video2.addEventListener('timeupdate', () => {
+    ring2.setAttribute('visible', video2.currentTime >= DESIGNED_DISSOCIATION_START);
   });
 
   function fitPlane(video, plane){
